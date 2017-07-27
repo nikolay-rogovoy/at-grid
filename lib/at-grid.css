@@ -1,0 +1,34 @@
+.uneven_row{
+  background-color: #f9f9f9;
+}
+.even_row{
+  background-color: #ffffff;
+}
+.uneven_row_mouse_over{
+  background-color: #e9f9f9;
+}
+.even_row_mouse_over{
+  background-color: #e9f9f9;
+}
+.base_row_tr{
+  cursor: pointer;
+}
+.base_row_td{
+  padding: 10px;
+}
+.base_header_tr{
+  cursor: pointer;
+}
+.base_header_td{
+  padding: 10px;
+}
+input, select {
+  width:100%;
+}
+li {
+  padding-left:200px;
+}
+td.last {
+  width: 1px;
+  white-space: nowrap;
+}
