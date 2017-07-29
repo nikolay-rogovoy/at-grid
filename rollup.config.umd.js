@@ -10,11 +10,13 @@ export default {
     format: 'umd',
     moduleName: 'at-grid',
     sourceMap: true,
-    /*
     external: [
+        '@angular/common',
+        '@angular/compiler',
+        '@angular/forms',
         '@angular/core',
+        "@angular/platform-browser",
     ],
-    */
     dest: 'dist/at-grid.umd.js',
 
     plugins: [

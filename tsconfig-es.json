@@ -11,6 +11,14 @@
     "lib": ["es2015", "dom"]
   },
 
-  "files": ["./lib/at-grid-source.ts"]
+  "files": ["./lib/at-grid-source.ts"],
 
+  "exclude": [
+    "node_modules"
+  ],
+
+  "angularCompilerOptions": {
+    "genDir": "./dist",
+    "skipMetadataEmit" : false
+  }
 }
