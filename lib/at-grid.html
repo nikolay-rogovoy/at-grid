@@ -1,10 +1,10 @@
 <form name="form" id="form" #myForm="ngForm">
-  <table width="100%" style="width:100%" border="1">
+  <table width="100%" style="width:100%" border="1" class="at-table">
     <thead>
       <tr class="base_header_tr">
         <td *ngFor="let column of metaData"
             class="base_header_td">
-          {{column.comment}}
+          <b>{{column.comment}}</b>
         </td>
       </tr>
       <tr>

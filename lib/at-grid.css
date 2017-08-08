@@ -32,3 +32,6 @@ td.last {
   width: 1px;
   white-space: nowrap;
 }
+.at-table {
+  border-radius: 10px;
+}

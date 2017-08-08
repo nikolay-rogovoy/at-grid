@@ -58,6 +58,7 @@ export class AtGrid implements  OnInit, AfterViewChecked {
 
   /**Выделить строку*/
   selectRow(item: Object) {
+    this.onSelect.emit(item);
   }
 
   /**Первая страница*/
