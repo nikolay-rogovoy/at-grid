@@ -2,7 +2,7 @@ import {
   Component, OnInit, AfterViewChecked, Input, Output,
   EventEmitter, ViewChild
 } from '@angular/core';
-import {ColumnInfo} from './column-info';
+import {ColumnInfo, ColumnFormat} from './column-info';
 import {NgForm} from '@angular/forms';
 
 @Component({
@@ -47,6 +47,9 @@ export class AtGrid implements  OnInit, AfterViewChecked {
   /**Выделене какой-то позиции*/
   @Output()
   onLoad = new EventEmitter<number>();
+
+  /**Энум в компонет*/
+  public columnFormat = ColumnFormat;
 
   /**Инит компонента*/
   ngOnInit() {
