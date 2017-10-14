@@ -42,6 +42,9 @@
           <div *ngIf="column.columnFormat == columnFormat.Boolean">
             <input type="checkbox" [(ngModel)]="item[column.name]" [id]="'col_' + column.name + '_' + idx" [name]="'col_' + column.name + '_' + idx"/>
           </div>
+          <div *ngIf="column.columnFormat == columnFormat.Picture && item[column.name] != null">
+            <img [width]="imageSize" [height]="imageSize" [src]="item[column.name] | safeHtml" />
+          </div>
         </td>
       </tr>
     </tbody>

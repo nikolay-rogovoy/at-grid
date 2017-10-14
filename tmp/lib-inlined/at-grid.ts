@@ -8,8 +8,68 @@ import {NgForm} from '@angular/forms';
 @Component({
   moduleId: module.id,
   selector: 'at-grid',
-  styleUrls: ['at-grid.css'],
-  templateUrl: 'at-grid.html'
+  styles: [`
+    .uneven_row{background-color:#f9f9f9}.even_row{background-color:#ffffff}.uneven_row_mouse_over{background-color:#e9f9f9}.even_row_mouse_over{background-color:#e9f9f9}.base_row_tr{cursor:pointer}.base_row_td{padding:10px}.base_header_tr{cursor:pointer}.base_header_td{padding:10px}input,select{width:100%}li{padding-left:200px}td.last{width:1px;white-space:nowrap}.at-table{border-radius:10px}
+  `],
+  template: `
+    <form name="form" id="form" #myForm="ngForm">
+      <table width="100%" style="width:100%" border="1" class="at-table">
+        <thead>
+          <tr class="base_header_tr">
+            <td *ngFor="let column of metaData"
+                class="base_header_td">
+              <b>{{column.comment}}</b>
+            </td>
+          </tr>
+          <tr>
+            <td *ngFor="let column of metaData">
+              <input type="text" [name]="column.name" [id]="column.name" [(ngModel)]="column.filterInfo.value" (ngModelChange)="filterChanged($event)">
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of getRowForPage(); let idx = index"
+              [ngClass]="{ 'even_row': (idx % 2 == 0) && rowNumMouseOver != idx,
+               'uneven_row': (idx % 2 == 1) && rowNumMouseOver != idx,
+               'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
+               'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
+               }"
+              class="base_row_tr"
+              (click)="selectRow(item)"
+              (mouseleave)="mouseOver(null)"
+              (mouseover)="mouseOver(idx)"
+          >
+            <td *ngFor="let column of metaData"
+                class="base_row_td">
+              <div *ngIf="column.columnFormat == columnFormat.Number" align="right">
+                {{item[column.name]|number}}
+              </div>
+              <div *ngIf="column.columnFormat == columnFormat.Currency" align="right">
+                {{item[column.name]|number:'1.2-2'}}
+              </div>
+              <div *ngIf="column.columnFormat == columnFormat.Date">
+                {{item[column.name]|date:'dd.MM.yyyy'}}
+              </div>
+              <div *ngIf="column.columnFormat == columnFormat.Default">
+                {{item[column.name]}}
+              </div>
+              <div *ngIf="column.columnFormat == columnFormat.Boolean">
+                <input type="checkbox" [(ngModel)]="item[column.name]" [id]="'col_' + column.name + '_' + idx" [name]="'col_' + column.name + '_' + idx"/>
+              </div>
+              <div *ngIf="column.columnFormat == columnFormat.Picture && item[column.name] != null">
+                <img [width]="imageSize" [height]="imageSize" [src]="item[column.name] | safeHtml" />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button (click)="firstPage()"> << </button>
+      <button (click)="prevPage()"> < </button>
+      {{getHumanCurrentPage()}} из {{getQuPage()}}
+      <button (click)="nextPage()"> > </button>
+      <button (click)="lastPage()"> >> </button>
+    </form>
+  `
 })
 export class AtGrid implements  OnInit, AfterViewChecked {
 
