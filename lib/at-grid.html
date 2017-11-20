@@ -26,7 +26,7 @@
           (mouseover)="mouseOver(idx)"
       >
         <td *ngFor="let column of metaData"
-            class="base_row_td">
+            class="base_row_td" [ngStyle] = "callbackSetCellStyle(item, column)">
           <div *ngIf="column.columnFormat == columnFormat.Number" align="right">
             {{item[column.name]|number}}
           </div>
@@ -49,9 +49,9 @@
       </tr>
     </tbody>
   </table>
-  <button (click)="firstPage()"> << </button>
-  <button (click)="prevPage()"> < </button>
+  <button (click)="firstPage()" type="button"> << </button>
+  <button (click)="prevPage()" type="button"> < </button>
   {{getHumanCurrentPage()}} из {{getQuPage()}}
-  <button (click)="nextPage()"> > </button>
-  <button (click)="lastPage()"> >> </button>
+  <button (click)="nextPage()" type="button"> > </button>
+  <button (click)="lastPage()" type="button"> >> </button>
 </form>
