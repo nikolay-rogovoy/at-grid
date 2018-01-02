@@ -45,9 +45,8 @@
                     <div *ngIf="column.columnFormat == columnFormat.Picture && item[column.name] != null" [id]="getCellId(idx, colNum)">
                         <img [width]="imageSize" [height]="imageSize" [src]="item[column.name] | safeHtml" />
                     </div>
-                    <div *ngIf="column.columnFormat == columnFormat.HTML && item[column.name] != null" [id]="getCellId(idx, colNum)" #mydiv>
-
-
+                    <div *ngIf="column.columnFormat == columnFormat.Template && item[column.name] != null" [id]="getCellId(idx, colNum)">
+                        <ng-container *ngTemplateOutlet="item[column.name].template;context:item[column.name].context"></ng-container>
                     </div>
                 </td>
             </tr>

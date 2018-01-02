@@ -16,5 +16,5 @@ export enum ColumnFormat {
     Default,
     Boolean,
     Picture,
-    HTML
+    Template
 }
