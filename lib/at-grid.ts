@@ -163,4 +163,8 @@ export class AtGrid implements  OnInit, AfterViewChecked {
         this.rowNumMouseOver = rowNum;
     }
 
+    getCellId(rowNum: number, colNum: number): string {
+        return `at_grid_cell_${rowNum}'_'${colNum}`;
+    }
+
 }

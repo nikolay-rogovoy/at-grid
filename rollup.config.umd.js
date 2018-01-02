@@ -3,13 +3,12 @@ import commonjs    from 'rollup-plugin-commonjs';
 import angular from 'rollup-plugin-angular';
 import typescript from 'rollup-plugin-typescript';
 var sass = require('node-sass');
-//import uglify from 'rollup-plugin-uglify';
+import uglify from 'rollup-plugin-uglify';
 
 export default {
-    entry: 'lib/at-grid-source.ts',
-    format: 'umd',
-    moduleName: 'at-grid',
-    sourceMap: true,
+    input: 'lib/at-grid-source.ts',
+    name: 'at-grid',
+    sourcemap: true,
     external: [
         '@angular/common',
         '@angular/compiler',
@@ -17,10 +16,13 @@ export default {
         '@angular/core',
         "@angular/platform-browser",
     ],
-    dest: 'dist/at-grid.umd.js',
+    output: {
+        format: 'umd',
+        file: 'dist/at-grid.umd.js'
+    },
 
     plugins: [
-        angular(
+        angular( // Template & Style preprocessing
             {
                 preprocessors: {
                     template: template => template,
@@ -45,8 +47,8 @@ export default {
 }),
         commonjs({
             include: 'node_modules/**',
-        })
-        //uglify()
+        }),
+        uglify()
     ],
     onwarn: warning => {
         const skip_codes = [
