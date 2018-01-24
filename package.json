@@ -1,6 +1,6 @@
 {
     "name": "at-grid",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "description": "AtGrid",
     "main": "at-grid.umd.js",
     "jsnext:main": "at-grid.esm.js",
