@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import {ColumnInfo, ColumnFormat} from './column-info';
 import {NgForm} from '@angular/forms';
+import {ChangedCellArgs} from "./changed-cell-args";
 
 @Component({
   moduleId: module.id,
@@ -40,26 +41,116 @@ import {NgForm} from '@angular/forms';
                     (mouseover)="mouseOver(idx)"
                 >
                     <td *ngFor="let column of metaData; let colNum = index"
-                        class="base_row_td" [ngStyle] = "callbackSetCellStyle(item, column)">
-                        <div *ngIf="column.columnFormat == columnFormat.Number" align="right" [id]="getCellId(idx, colNum)">
+                        style = "height: 1px;"
+                        class="base_row_td" [ngStyle] = "callbackSetCellStyle(item, column)"
+                        (mouseleave)="mouseOverCell(null)"
+                        (mouseover)="mouseOverCell(column)"
+                    >
+
+                        <div *ngIf="column.columnFormat == columnFormat.Number && !isAllowEdit(idx, column)" align="right"
+                             [id]="getCellId(idx, colNum)" style="height: 100%">
                             {{item[column.name]|number}}
                         </div>
-                        <div *ngIf="column.columnFormat == columnFormat.Currency" align="right" [id]="getCellId(idx, colNum)">
+                        <div *ngIf="column.columnFormat == columnFormat.Number && isAllowEdit(idx, column)" align="right"
+                             [id]="getCellId(idx, colNum)"  style="height: 100%">
+                            <input type="number"  pattern="^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$"
+                                   [name]="'input' + getCellId(idx, colNum)" [id]="'input' + getCellId(idx, colNum)"
+                                   style="border: none;"
+                                   [ngClass]="{ 'even_row': (idx % 2 == 0) && rowNumMouseOver != idx,
+                                                'uneven_row': (idx % 2 == 1) && rowNumMouseOver != idx,
+                                                'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
+                                                'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
+                                                }"
+                                   [(ngModel)]="item[column.name]"
+                                   (change)="changedCell({columnInfo: column, value: item})"
+                            />
+                        </div>
+
+                        <div *ngIf="column.columnFormat == columnFormat.Currency && !isAllowEdit(idx, column)" align="right"
+                             [id]="getCellId(idx, colNum)" style="height: 100%">
                             {{item[column.name]|number:'1.2-2'}}
                         </div>
-                        <div *ngIf="column.columnFormat == columnFormat.Date" [id]="getCellId(idx, colNum)">
+                        <div *ngIf="column.columnFormat == columnFormat.Currency && isAllowEdit(idx, column)" align="right"
+                             [id]="getCellId(idx, colNum)" style="height: 100%">
+                            <input type="number"  pattern="^[-+]?[0-9]*[.,]?[0-9]+(?:[eE][-+]?[0-9]+)?$"
+                                   [name]="'input' + getCellId(idx, colNum)" [id]="'input' + getCellId(idx, colNum)"
+                                   style="border: none;"
+                                   [ngClass]="{ 'even_row': (idx % 2 == 0) && rowNumMouseOver != idx,
+                                                'uneven_row': (idx % 2 == 1) && rowNumMouseOver != idx,
+                                                'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
+                                                'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
+                                                }"
+                                   [(ngModel)]="item[column.name]"
+                                   (change)="changedCell({columnInfo: column, value: item})"
+                            />
+                        </div>
+
+                        <div *ngIf="column.columnFormat == columnFormat.Date && !isAllowEdit(idx, column)"
+                             [id]="getCellId(idx, colNum)" style="height: 100%">
                             {{item[column.name]|date:'dd.MM.yyyy'}}
                         </div>
-                        <div *ngIf="column.columnFormat == columnFormat.Default" [id]="getCellId(idx, colNum)">
+                        <div *ngIf="column.columnFormat == columnFormat.Date && isAllowEdit(idx, column)"
+                             [id]="getCellId(idx, colNum)" style="height: 100%">
+                            <input type="date"  [name]="'input' + getCellId(idx, colNum)"
+                                   [id]="'input' + getCellId(idx, colNum)"
+                                   style="border: none;"
+                                   [ngClass]="{ 'even_row': (idx % 2 == 0) && rowNumMouseOver != idx,
+                                                'uneven_row': (idx % 2 == 1) && rowNumMouseOver != idx,
+                                                'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
+                                                'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
+                                                }"
+                                   [ngModel]="item[column.name] | date:'yyyy-MM-dd'"
+                                   (ngModelChange)="item[column.name] = $event"
+                                   (change)="changedCell({columnInfo: column, value: item})"
+                            />
+                        </div>
+
+                        <div *ngIf="column.columnFormat == columnFormat.Default && !isAllowEdit(idx, column)"
+                             [id]="getCellId(idx, colNum)"
+                             style="height: 100%">
                             {{item[column.name]}}
                         </div>
-                        <div *ngIf="column.columnFormat == columnFormat.Boolean" [id]="getCellId(idx, colNum)">
-                            <input type="checkbox" [(ngModel)]="item[column.name]" [id]="'col_' + column.name + '_' + idx" [name]="'col_' + column.name + '_' + idx"/>
+                        <div *ngIf="column.columnFormat == columnFormat.Default && isAllowEdit(idx, column)"
+                             [id]="getCellId(idx, colNum)"
+                             style="height: 100%">
+                            <input type="text"  [name]="'input' + getCellId(idx, colNum)"
+                                   [id]="'input' + getCellId(idx, colNum)"
+                                   style="border: none;"
+                                   [ngClass]="{ 'even_row': (idx % 2 == 0) && rowNumMouseOver != idx,
+                                                'uneven_row': (idx % 2 == 1) && rowNumMouseOver != idx,
+                                                'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
+                                                'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
+                                                }"
+                                   [(ngModel)]="item[column.name]"
+                                   (change)="changedCell({columnInfo: column, value: item})"
+                            />
                         </div>
-                        <div *ngIf="column.columnFormat == columnFormat.Picture && item[column.name] != null" [id]="getCellId(idx, colNum)">
+
+                        <div *ngIf="column.columnFormat == columnFormat.Boolean"
+                             [id]="getCellId(idx, colNum)"
+                             style="height: 100%">
+                            <input type="checkbox"
+                                   [id]="'col_' + column.name + '_' + idx" [name]="'col_' + column.name + '_' + idx"
+                                   style="border: none;"
+                                   [ngClass]="{ 'even_row': (idx % 2 == 0) && rowNumMouseOver != idx,
+                                                'uneven_row': (idx % 2 == 1) && rowNumMouseOver != idx,
+                                                'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
+                                                'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
+                                                }"
+                                   [(ngModel)]="item[column.name]"
+                                   (change)="changedCell({columnInfo: column, value: item})"
+                            />
+                        </div>
+
+                        <div *ngIf="column.columnFormat == columnFormat.Picture && item[column.name] != null"
+                             [id]="getCellId(idx, colNum)"
+                             style="height: 100%">
                             <img [width]="imageSize" [height]="imageSize" [src]="item[column.name] | safeHtml" />
                         </div>
-                        <div *ngIf="column.columnFormat == columnFormat.Template && item[column.name] != null" [id]="getCellId(idx, colNum)">
+
+                        <div *ngIf="column.columnFormat == columnFormat.Template && item[column.name] != null"
+                             [id]="getCellId(idx, colNum)"
+                             style="height: 100%">
                             <ng-container *ngTemplateOutlet="item[column.name].template;context:item[column.name].context"></ng-container>
                         </div>
                     </td>
@@ -115,9 +206,16 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     /**Номер строки с наведенной мышкой*/
     rowNumMouseOver: number;
 
+    /**Ячейка под указателем*/
+    cellOver: ColumnInfo;
+
     /**Выделене какой-то позиции*/
     @Output()
     onLoad = new EventEmitter<number>();
+
+    /***/
+    @Output()
+    onChanged = new EventEmitter<ChangedCellArgs>();
 
     /**Энум в компонет*/
     public columnFormat = ColumnFormat;
@@ -222,12 +320,29 @@ export class AtGrid implements  OnInit, AfterViewChecked {
         console.log(filter);
     }
 
+    /***/
     mouseOver(rowNum: number) {
         this.rowNumMouseOver = rowNum;
     }
 
+    /***/
+    mouseOverCell(cellOver: ColumnInfo) {
+        this.cellOver = cellOver;
+    }
+
+    /***/
     getCellId(rowNum: number, colNum: number): string {
         return `at_grid_cell_${rowNum}'_'${colNum}`;
     }
 
+    /**Ячейка изменена*/
+    changedCell(param: ChangedCellArgs) {
+        this.onChanged.emit(param);
+    }
+
+    /***/
+    isAllowEdit(rowNum: number, column: ColumnInfo) {
+        // && column === this.cellOver && rowNum === this.rowNumMouseOver
+        return column.editable;
+    }
 }

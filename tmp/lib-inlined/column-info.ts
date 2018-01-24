@@ -5,7 +5,8 @@ export class ColumnInfo {
                 public comment: string,
                 public allowSort = true,
                 public filterInfo: FilterInfo = new FilterInfo(''),
-                public columnFormat: ColumnFormat = ColumnFormat.Default) {
+                public columnFormat: ColumnFormat = ColumnFormat.Default,
+                public editable = false) {
     }
 }
 
