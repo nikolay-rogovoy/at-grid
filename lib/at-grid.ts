@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import {ColumnInfo, ColumnFormat} from './column-info';
 import {NgForm} from '@angular/forms';
+import {ChangedCellArgs} from "./changed-cell-args";
 
 @Component({
   moduleId: module.id,
@@ -52,9 +53,16 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     /**Номер строки с наведенной мышкой*/
     rowNumMouseOver: number;
 
+    /**Ячейка под указателем*/
+    cellOver: ColumnInfo;
+
     /**Выделене какой-то позиции*/
     @Output()
     onLoad = new EventEmitter<number>();
+
+    /***/
+    @Output()
+    onChanged = new EventEmitter<ChangedCellArgs>();
 
     /**Энум в компонет*/
     public columnFormat = ColumnFormat;
@@ -159,12 +167,29 @@ export class AtGrid implements  OnInit, AfterViewChecked {
         console.log(filter);
     }
 
+    /***/
     mouseOver(rowNum: number) {
         this.rowNumMouseOver = rowNum;
     }
 
+    /***/
+    mouseOverCell(cellOver: ColumnInfo) {
+        this.cellOver = cellOver;
+    }
+
+    /***/
     getCellId(rowNum: number, colNum: number): string {
         return `at_grid_cell_${rowNum}'_'${colNum}`;
     }
 
+    /**Ячейка изменена*/
+    changedCell(param: ChangedCellArgs) {
+        this.onChanged.emit(param);
+    }
+
+    /***/
+    isAllowEdit(rowNum: number, column: ColumnInfo) {
+        // && column === this.cellOver && rowNum === this.rowNumMouseOver
+        return column.editable;
+    }
 }
