@@ -12,6 +12,7 @@ export class ColumnInfo {
 
 export enum ColumnFormat {
     Date,
+    Datetime,
     Number,
     Currency,
     Default,

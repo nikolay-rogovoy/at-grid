@@ -192,4 +192,9 @@ export class AtGrid implements  OnInit, AfterViewChecked {
         // && column === this.cellOver && rowNum === this.rowNumMouseOver
         return column.editable;
     }
+
+    /***/
+    setDatetime(item: object, column: ColumnInfo, value: any) {
+        item[column.name] = new Date(value);
+    }
 }
