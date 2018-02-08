@@ -24,7 +24,12 @@ import {ChangedCellArgs} from "./changed-cell-args";
                 </tr>
                 <tr>
                     <td *ngFor="let column of metaData">
-                        <input type="text" [name]="column.name" [id]="column.name" [(ngModel)]="column.filterInfo.value" (ngModelChange)="filterChanged($event)">
+                        <input
+                                type="text"
+                                [name]="column.name"
+                                [id]="column.name"
+                                [(ngModel)]="column.filterInfo.value"
+                                (ngModelChange)="filterChanged($event)"/>
                     </td>
                 </tr>
             </thead>
@@ -63,6 +68,7 @@ import {ChangedCellArgs} from "./changed-cell-args";
                                                 }"
                                    [(ngModel)]="item[column.name]"
                                    (change)="changedCell({columnInfo: column, value: item})"
+                                   (click)="$event.stopPropagation()"
                             />
                         </div>
 
@@ -82,6 +88,7 @@ import {ChangedCellArgs} from "./changed-cell-args";
                                                 }"
                                    [(ngModel)]="item[column.name]"
                                    (change)="changedCell({columnInfo: column, value: item})"
+                                   (click)="$event.stopPropagation()"
                             />
                         </div>
 
@@ -90,7 +97,8 @@ import {ChangedCellArgs} from "./changed-cell-args";
                             {{item[column.name]|date:'dd.MM.yyyy'}}
                         </div>
                         <div *ngIf="column.columnFormat == columnFormat.Date && isAllowEdit(idx, column)"
-                             [id]="getCellId(idx, colNum)" style="height: 100%">
+                             [id]="getCellId(idx, colNum)" style="height: 100%"
+                             (click)="$event.stopPropagation()">
                             <input type="date"  [name]="'input' + getCellId(idx, colNum)"
                                    [id]="'input' + getCellId(idx, colNum)"
                                    style="border: none;"
@@ -102,6 +110,29 @@ import {ChangedCellArgs} from "./changed-cell-args";
                                    [ngModel]="item[column.name] | date:'yyyy-MM-dd'"
                                    (ngModelChange)="item[column.name] = $event"
                                    (change)="changedCell({columnInfo: column, value: item})"
+                                   (click)="$event.stopPropagation()"
+                            />
+                        </div>
+
+                        <div *ngIf="column.columnFormat == columnFormat.Datetime && !isAllowEdit(idx, column)"
+                             [id]="getCellId(idx, colNum)" style="height: 100%">
+                            {{item[column.name]|date:'dd.MM.yyyy hh:mm'}}
+                        </div>
+                        <div *ngIf="column.columnFormat == columnFormat.Datetime && isAllowEdit(idx, column)"
+                             [id]="getCellId(idx, colNum)" style="height: 100%"
+                             (click)="$event.stopPropagation()">
+                            <input type="datetime-local"  [name]="'input' + getCellId(idx, colNum)"
+                                   [id]="'input' + getCellId(idx, colNum)"
+                                   style="border: none;"
+                                   [ngClass]="{ 'even_row': (idx % 2 == 0) && rowNumMouseOver != idx,
+                                                'uneven_row': (idx % 2 == 1) && rowNumMouseOver != idx,
+                                                'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
+                                                'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
+                                                }"
+                                   [ngModel]="item[column.name] | date:'yyyy-MM-ddThh:mm'"
+                                   (ngModelChange)="setDatetime(item, column, $event)"
+                                   (change)="changedCell({columnInfo: column, value: item})"
+                                   (click)="$event.stopPropagation()"
                             />
                         </div>
 
@@ -123,6 +154,7 @@ import {ChangedCellArgs} from "./changed-cell-args";
                                                 }"
                                    [(ngModel)]="item[column.name]"
                                    (change)="changedCell({columnInfo: column, value: item})"
+                                   (click)="$event.stopPropagation()"
                             />
                         </div>
 
@@ -344,5 +376,10 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     isAllowEdit(rowNum: number, column: ColumnInfo) {
         // && column === this.cellOver && rowNum === this.rowNumMouseOver
         return column.editable;
+    }
+
+    /***/
+    setDatetime(item: object, column: ColumnInfo, value: any) {
+        item[column.name] = new Date(value);
     }
 }
