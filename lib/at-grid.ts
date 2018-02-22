@@ -2,7 +2,7 @@ import {
   Component, OnInit, AfterViewChecked, Input, Output,
   EventEmitter, ViewChild
 } from '@angular/core';
-import {ColumnInfo, ColumnFormat} from './column-info';
+import {ColumnInfo, ColumnFormat, ColumnSort} from './column-info';
 import {NgForm} from '@angular/forms';
 import {ChangedCellArgs} from "./changed-cell-args";
 
@@ -42,6 +42,10 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     @Input()
     callbackSetCellStyle: Function;
 
+    /**Имя грида для хранения лайаутов*/
+    @Input()
+    name = 'at-grid';
+
     /**Выделене какой-то позиции*/
     @Output()
     onSelect = new EventEmitter<Object>();
@@ -67,12 +71,31 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     /**Энум в компонет*/
     public columnFormat = ColumnFormat;
 
+    /**Энум в компонет*/
+    public columnSort = ColumnSort;
+
+    /**Ширина стрелки сортировки*/
+    arrowWidth = 0;
+
+    /**Высота стрелки сортировки*/
+    arrowHeight = 0;
+
+    /**Показать порядок сортировки*/
+    showSortOrder = false;
+
+    /**Конструктор*/
     constructor() {
         this.callbackSetCellStyle = (row: Object, column: ColumnInfo) => {};
     }
 
     /**Инит компонента*/
     ngOnInit() {
+        const fontSize = this.getDefaultFontSize();
+        this.arrowWidth = fontSize / 2;
+        this.arrowHeight = fontSize;
+        // Восстановить лайауты
+        this.restoreLayouts();
+        this.calcShowSortOrder();
     }
 
     /**После загрузки вьюхи*/
@@ -149,11 +172,53 @@ export class AtGrid implements  OnInit, AfterViewChecked {
         return result;
     }
 
+    /**Сравнить две строки*/
+    compareColumn(a: object, b: object, columnInfo: ColumnInfo): number {
+        let fieldValueA = a[columnInfo.name];
+        let fieldValueB = b[columnInfo.name];
+        if (fieldValueA == null && fieldValueB == null) {
+            return 0;
+        } else if (fieldValueA == null) {
+            return -1;
+        } else if (fieldValueB == null) {
+            return 1;
+        } else {
+            switch (columnInfo.columnFormat) {
+                case ColumnFormat.Datetime:
+                    return (<Date>fieldValueA).getTime() - (<Date>fieldValueB).getTime();
+                case ColumnFormat.Date:
+                    return (<Date>fieldValueA).getTime() - (<Date>fieldValueB).getTime();
+                case ColumnFormat.Default:
+                    return (<string>fieldValueA).localeCompare(<string>fieldValueB);
+                case ColumnFormat.Number:
+                    return (<number>fieldValueA) - (<number>fieldValueB);
+                case ColumnFormat.Currency:
+                    return (<number>fieldValueA) - (<number>fieldValueB);
+                case ColumnFormat.Boolean:
+                    return (Number(fieldValueA)) - (Number(fieldValueB));
+                default:
+                    return 0;
+            }
+        }
+    }
+
     /**Получить строки для страницы*/
     getRowForPage(): Array<Object> {
         let index = 0;
         let result: Array<Object> = [];
-        for (let item of this.applyFilter()) {
+        for (let item of this.applyFilter().sort((a, b) => {
+            for (let col of this.metaData
+                .filter(x => x.columnSort !== ColumnSort.None)
+                .sort((a, b) => a.columnSortNumber - b.columnSortNumber)) {
+                let compareResult = this.compareColumn(a, b, col);
+                if (compareResult === 0) {
+                    // Переходим к следующей колонке, данные равны
+                } else {
+                    return compareResult * (col.columnSort === ColumnSort.Desc ? - 1 : 1);
+                }
+            }
+            return 0;
+        })) {
             if (index >= this.currentPage * this.quRowOnPage && index < (this.currentPage + 1) * this.quRowOnPage) {
                 result.push(item);
             }
@@ -196,5 +261,89 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     /***/
     setDatetime(item: object, column: ColumnInfo, value: any) {
         item[column.name] = new Date(value);
+    }
+
+    /**Получить размер шрифта по умолчанию*/
+    getDefaultFontSize(): number {
+        const who = document.createElement('div');
+
+        who.style.cssText = 'display:inline-block; padding:0; line-height:1; position:absolute; visibility:hidden; font-size:1em';
+
+        who.appendChild(document.createTextNode('M'));
+        document.body.appendChild(who);
+        const fs = who.offsetHeight;
+        document.body.removeChild(who);
+        return +fs;
+    }
+
+    /***/
+    calcShowSortOrder() {
+        this.showSortOrder = this.metaData
+            .filter(x => x.columnSort !== ColumnSort.None).length > 1;
+    }
+
+    /**Изменить сортировку колонки*/
+    changeSort(columnInfo: ColumnInfo) {
+        if (columnInfo.columnFormat === ColumnFormat.Template || columnInfo.columnFormat === ColumnFormat.Picture) {
+            // По этим колонкам сортировать нельзя :)
+            return;
+        }
+        if (columnInfo.allowSort) {
+            if (columnInfo.columnSort === ColumnSort.None) {
+                // Номер колонки для сортировки
+                let columnSortNumber = 1;
+                for (let col of this.metaData) {
+                    if (col.columnSort !== ColumnSort.None) {
+                        columnSortNumber++;
+                    }
+                }
+                columnInfo.columnSort = ColumnSort.Ask;
+                columnInfo.columnSortNumber = columnSortNumber;
+                console.log(columnInfo);
+            } else if (columnInfo.columnSort === ColumnSort.Ask) {
+                columnInfo.columnSort = ColumnSort.Desc;
+            } else if (columnInfo.columnSort === ColumnSort.Desc) {
+                columnInfo.columnSort = ColumnSort.None;
+                columnInfo.columnSortNumber = 0;
+                // Пересортировываем порядок сортировок :)
+                let i = 1;
+                for (let col of this.metaData
+                    .filter(x => x.columnSort !== ColumnSort.None)
+                    .sort((a, b) => a.columnSortNumber - b.columnSortNumber)) {
+                    if (col.columnSort !== ColumnSort.None) {
+                        col.columnSortNumber = i++;
+                    }
+                }
+            }
+            this.calcShowSortOrder();
+            this.saveLayouts();
+        }
+    }
+
+    /***/
+    getOutGridName() {
+        return `AtGridLayouts-${this.name}`;
+    }
+    /***/
+    saveLayouts() {
+        let data = JSON.stringify(this.metaData);
+        localStorage.setItem(this.getOutGridName(), data);
+    }
+
+    /***/
+    restoreLayouts() {
+        if (localStorage.getItem(this.getOutGridName()) != null) {
+            let data = <ColumnInfo[]>JSON.parse(localStorage.getItem(this.getOutGridName()));
+            for (let di of data) {
+                let someCols = this.metaData.filter(x => x.name === di.name);
+                if (someCols.length > 0) {
+                    let someCol = someCols[0];
+                    if (di.columnSort !== ColumnSort.None) {
+                        someCol.columnSort = di.columnSort;
+                        someCol.columnSortNumber = di.columnSortNumber;
+                    }
+                }
+            }
+        }
     }
 }

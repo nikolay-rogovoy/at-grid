@@ -1,6 +1,15 @@
 import {FilterInfo} from './filter-info';
 
+/**Информация о колонке*/
 export class ColumnInfo {
+
+    /**Сортировка текущей колонки*/
+    columnSort = ColumnSort.None;
+
+    /**Порядок сортировок если несклько колонок*/
+    columnSortNumber = 0;
+
+    /**Конструктор*/
     constructor(public name: string,
                 public comment: string,
                 public allowSort = true,
@@ -10,6 +19,7 @@ export class ColumnInfo {
     }
 }
 
+/**Форматы колонки*/
 export enum ColumnFormat {
     Date,
     Datetime,
@@ -19,4 +29,11 @@ export enum ColumnFormat {
     Boolean,
     Picture,
     Template
+}
+
+/**Сортировки колонки*/
+export enum ColumnSort {
+    Ask,
+    Desc,
+    None
 }

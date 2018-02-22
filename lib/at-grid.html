@@ -4,7 +4,50 @@
             <tr class="base_header_tr">
                 <td *ngFor="let column of metaData"
                     class="base_header_td">
-                  <b>{{column.comment}}</b>
+                    <div style="display: flex; width: 100%" (click)="changeSort(column)">
+                        <div style="flex: auto;"><b>{{column.comment}}</b></div>
+                        <div style="margin-left: 5px;" [ngStyle] = "{'max-width': arrowWidth + 'px', flex: 'auto'}"><!---->
+                            <svg *ngIf = "column.columnSort === columnSort.Desc" [attr.height] = "arrowHeight" [attr.width] = "arrowWidth">
+                                <line [attr.x1]="0"
+                                      [attr.y1]="arrowHeight / 2"
+                                      [attr.x2]="arrowWidth / 2"
+                                      [attr.y2]="arrowHeight"
+                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                                <line [attr.x1]="arrowWidth / 2"
+                                      [attr.y1]="arrowHeight"
+                                      [attr.x2]="arrowWidth"
+                                      [attr.y2]="arrowHeight / 2"
+                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                                <line [attr.x1]="arrowWidth / 2"
+                                      [attr.y1]="0"
+                                      [attr.x2]="arrowWidth / 2"
+                                      [attr.y2]="arrowHeight"
+                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                            </svg>
+                            <svg *ngIf = "column.columnSort === columnSort.Ask" [attr.height] = "arrowHeight" [attr.width] = "arrowWidth">
+                                <line [attr.x1]="0"
+                                      [attr.y1]="arrowHeight / 2"
+                                      [attr.x2]="arrowWidth / 2"
+                                      [attr.y2]="0"
+                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                                <line [attr.x1]="arrowWidth / 2"
+                                      [attr.y1]="0"
+                                      [attr.x2]="arrowWidth"
+                                      [attr.y2]="arrowHeight / 2"
+                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                                <line [attr.x1]="arrowWidth / 2"
+                                      [attr.y1]="0"
+                                      [attr.x2]="arrowWidth / 2"
+                                      [attr.y2]="arrowHeight"
+                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                            </svg>
+
+                        </div>
+                        <div *ngIf="this.showSortOrder && column.columnSort !== columnSort.None"
+                                [ngStyle] = "{'max-width': arrowWidth + 'px', flex: 'auto'}">
+                            {{column.columnSortNumber}}
+                        </div>
+                    </div>
                 </td>
             </tr>
             <tr>
