@@ -9,37 +9,37 @@
                         <div style="margin-left: 5px;" [ngStyle] = "{'max-width': arrowWidth + 'px', flex: 'auto'}"><!---->
                             <svg *ngIf = "column.columnSort === columnSort.Desc" [attr.height] = "arrowHeight" [attr.width] = "arrowWidth">
                                 <line [attr.x1]="0"
-                                      [attr.y1]="arrowHeight / 2"
+                                      [attr.y1]="arrowHeight / 4"
                                       [attr.x2]="arrowWidth / 2"
-                                      [attr.y2]="arrowHeight"
+                                      [attr.y2]="arrowHeight * 3 / 4"
                                       fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
                                 <line [attr.x1]="arrowWidth / 2"
-                                      [attr.y1]="arrowHeight"
+                                      [attr.y1]="arrowHeight * 3 / 4"
                                       [attr.x2]="arrowWidth"
-                                      [attr.y2]="arrowHeight / 2"
+                                      [attr.y2]="arrowHeight / 4"
                                       fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
-                                <line [attr.x1]="arrowWidth / 2"
-                                      [attr.y1]="0"
-                                      [attr.x2]="arrowWidth / 2"
-                                      [attr.y2]="arrowHeight"
-                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                                <!--<line [attr.x1]="arrowWidth / 2"-->
+                                      <!--[attr.y1]="0"-->
+                                      <!--[attr.x2]="arrowWidth / 2"-->
+                                      <!--[attr.y2]="arrowHeight"-->
+                                      <!--fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>-->
                             </svg>
                             <svg *ngIf = "column.columnSort === columnSort.Ask" [attr.height] = "arrowHeight" [attr.width] = "arrowWidth">
                                 <line [attr.x1]="0"
-                                      [attr.y1]="arrowHeight / 2"
+                                      [attr.y1]="arrowHeight * 3 / 4"
                                       [attr.x2]="arrowWidth / 2"
-                                      [attr.y2]="0"
+                                      [attr.y2]="arrowHeight / 4"
                                       fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
                                 <line [attr.x1]="arrowWidth / 2"
-                                      [attr.y1]="0"
+                                      [attr.y1]="arrowHeight / 4"
                                       [attr.x2]="arrowWidth"
-                                      [attr.y2]="arrowHeight / 2"
+                                      [attr.y2]="arrowHeight *3 / 4"
                                       fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
-                                <line [attr.x1]="arrowWidth / 2"
-                                      [attr.y1]="0"
-                                      [attr.x2]="arrowWidth / 2"
-                                      [attr.y2]="arrowHeight"
-                                      fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>
+                                <!--<line [attr.x1]="arrowWidth / 2"-->
+                                      <!--[attr.y1]="0"-->
+                                      <!--[attr.x2]="arrowWidth / 2"-->
+                                      <!--[attr.y2]="arrowHeight"-->
+                                      <!--fill="none" stroke="black" stroke-width="1px" stroke-opacity="1"/>-->
                             </svg>
 
                         </div>
