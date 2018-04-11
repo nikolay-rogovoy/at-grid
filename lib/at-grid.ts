@@ -177,7 +177,6 @@ export class AtGrid implements  OnInit, AfterViewChecked {
                         filterText = filterText.split('?').join(`[\\w\\W]{1}`);
                         //column.filterInfo.value
                         try {
-                            console.log(filterText);
                             let pattern = new RegExp(filterText, 'i');
                             // Условие правильное
                             checkFilter = pattern.test(testString);
