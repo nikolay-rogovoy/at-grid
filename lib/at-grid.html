@@ -144,7 +144,7 @@
 
                     <div *ngIf="column.columnFormat == columnFormat.Datetime && !isAllowEdit(idx, column)"
                          [id]="getCellId(idx, colNum)" style="height: 100%">
-                        {{item[column.name]|date:'dd.MM.yyyy hh:mm'}}
+                        {{item[column.name]|date:'dd.MM.yyyy HH:mm'}}
                     </div>
                     <div *ngIf="column.columnFormat == columnFormat.Datetime && isAllowEdit(idx, column)"
                          [id]="getCellId(idx, colNum)" style="height: 100%"
