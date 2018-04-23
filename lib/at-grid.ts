@@ -149,22 +149,48 @@ export class AtGrid implements  OnInit, AfterViewChecked {
         return this.currentPage + 1;
     }
 
+    /**Наложить автофильтр*/
     applyFilter(): Array<Object> {
         let result: Array<Object> = [];
 
         for (let item of this.data) {
             let checkFilter = true;
             for (let column of this.metaData) {
-                if (column.filterInfo.value !== '') {
-                    if (item[column.name] != null && item[column.name].toString().indexOf(column.filterInfo.value) !== -1) {
-                        // Условие правильное
+                if (column.filterInfo.value !== '' && column.filterInfo.value) {
+                    if (item[column.name] != null) {
+                        let testString = item[column.name].toString();
+                        let filterText = column.filterInfo.value;
+                        // Отпиливаем первую звездочку звездочку
+                        if (filterText[0] === '*') {
+                            filterText = filterText.substring(1);
+                        } else {
+                            // Текст должен начинаться с фильтра
+                            filterText = '^' + filterText;
+                        }
+                        // Экранировать слэш
+                        filterText = filterText.split('\\').join(`\\\\`);
+                        // Экранировать плюс
+                        filterText = filterText.split('+').join(`\\+`);
+                        // Остальные звездочки заменяем на любые символы
+                        filterText = filterText.split('*').join(`[\\w\\W]+`);
+                        // Вопрос - это любой символ
+                        filterText = filterText.split('?').join(`[\\w\\W]{1}`);
+                        //column.filterInfo.value
+                        try {
+                            let pattern = new RegExp(filterText, 'i');
+                            // Условие правильное
+                            checkFilter = pattern.test(testString);
+                        } catch (error) {
+                            console.error('Ошибка регулярного выражения', error);
+                        }
                     } else {
                         checkFilter = false;
-                        break;
                     }
                 }
+                if (!checkFilter) {
+                    break;
+                }
             }
-
             if (checkFilter) {
                 result.push(item);
             }
@@ -229,7 +255,6 @@ export class AtGrid implements  OnInit, AfterViewChecked {
 
     /**Фильтр изменен*/
     filterChanged(filter: any) {
-        console.log(filter);
     }
 
     /***/

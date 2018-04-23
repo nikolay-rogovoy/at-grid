@@ -1,6 +1,6 @@
 {
     "name": "at-grid",
-    "version": "1.0.21",
+    "version": "1.0.24",
     "description": "AtGrid",
     "main": "at-grid.umd.js",
     "jsnext:main": "at-grid.esm.js",
@@ -16,7 +16,7 @@
         "publish": "cd ./dist && npm publish",
         "npm-link": "cd ./dist && npm link",
         "gulp-inline-templates": "rimraf tmp && gulp inline-templates",
-        "copy-to-test": "cp ./dist/*.* ../at/node_modules/at-grid/"
+        "copy-to-test": "cp ./dist/*.* ../wd/node_modules/at-grid/"
     },
     "repository": {
         "type": "git",
