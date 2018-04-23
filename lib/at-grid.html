@@ -144,7 +144,7 @@
 
                     <div *ngIf="column.columnFormat == columnFormat.Datetime && !isAllowEdit(idx, column)"
                          [id]="getCellId(idx, colNum)" style="height: 100%">
-                        {{item[column.name]|date:'dd.MM.yyyy hh:mm'}}
+                        {{item[column.name]|date:'dd.MM.yyyy HH:mm'}}
                     </div>
                     <div *ngIf="column.columnFormat == columnFormat.Datetime && isAllowEdit(idx, column)"
                          [id]="getCellId(idx, colNum)" style="height: 100%"
@@ -157,7 +157,7 @@
                                             'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
                                             'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
                                             }"
-                               [ngModel]="item[column.name] | date:'yyyy-MM-ddThh:mm'"
+                               [ngModel]="item[column.name] | date:'yyyy-MM-ddTHH:mm'"
                                (ngModelChange)="setDatetime(item, column, $event)"
                                (change)="changedCell({columnInfo: column, value: item})"
                                (click)="$event.stopPropagation()"
