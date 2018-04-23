@@ -157,7 +157,7 @@
                                             'even_row_mouse_over': (idx % 2 == 0) && rowNumMouseOver == idx,
                                             'uneven_row_mouse_over': (idx % 2 == 1) && rowNumMouseOver == idx
                                             }"
-                               [ngModel]="item[column.name] | date:'yyyy-MM-ddThh:mm'"
+                               [ngModel]="item[column.name] | date:'yyyy-MM-ddTHH:mm'"
                                (ngModelChange)="setDatetime(item, column, $event)"
                                (change)="changedCell({columnInfo: column, value: item})"
                                (click)="$event.stopPropagation()"
