@@ -169,6 +169,9 @@ export class AtGrid implements  OnInit, AfterViewChecked {
                         }
                         // Экранировать слэш
                         filterText = filterText.split('\\').join(`\\\\`);
+                        // Экранировать скобки
+                        filterText = filterText.split('(').join("\\(");
+                        filterText = filterText.split(')').join("\\)");
                         // Экранировать плюс
                         filterText = filterText.split('+').join(`\\+`);
                         // Остальные звездочки заменяем на любые символы
