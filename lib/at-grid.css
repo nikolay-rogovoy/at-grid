@@ -89,3 +89,7 @@ td.last {
 .currency_view {
     flex-direction: row-reverse;
 }
+
+.input-current-page {
+    max-width: 50px;
+}

@@ -1,4 +1,9 @@
 <form name="form" id="form" #myForm="ngForm">
+    <button (click)="firstPage()" type="button"> << </button>
+    <button (click)="prevPage()" type="button"> < </button>
+    <input type="number" name="currentPage" class="input-current-page" id="currentPage" [(ngModel)]="humanCurrentPage"> из {{getQuPage()}}
+    <button (click)="nextPage()" type="button"> > </button>
+    <button (click)="lastPage()" type="button"> >> </button>
     <table width="100%" style="width:100%" border="1" class="at-table">
         <thead>
             <tr class="base_header_tr">
@@ -226,9 +231,4 @@
             </tr>
         </tbody>
     </table>
-    <button (click)="firstPage()" type="button"> << </button>
-    <button (click)="prevPage()" type="button"> < </button>
-    {{getHumanCurrentPage()}} из {{getQuPage()}}
-    <button (click)="nextPage()" type="button"> > </button>
-    <button (click)="lastPage()" type="button"> >> </button>
 </form>
