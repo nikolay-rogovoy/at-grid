@@ -1,6 +1,6 @@
 import {
-  Component, OnInit, AfterViewChecked, Input, Output,
-  EventEmitter, ViewChild
+    Component, OnInit, AfterViewChecked, Input, Output,
+    EventEmitter, ViewChild, ChangeDetectorRef
 } from '@angular/core';
 import {ColumnInfo, ColumnFormat, ColumnSort} from './column-info';
 import {NgForm} from '@angular/forms';
@@ -84,7 +84,7 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     showSortOrder = false;
 
     /**Конструктор*/
-    constructor() {
+    constructor(public changeDetectorRef: ChangeDetectorRef) {
         this.callbackSetCellStyle = (row: Object, column: ColumnInfo) => {};
     }
 
@@ -145,8 +145,23 @@ export class AtGrid implements  OnInit, AfterViewChecked {
     }
 
     /**Номер страницы от 1*/
-    getHumanCurrentPage(): number {
+    get humanCurrentPage(): number {
         return this.currentPage + 1;
+    }
+    set humanCurrentPage(value) {
+        if (value < 0) {
+            value = 1;
+        } else if (value > this.getQuPage()) {
+            value = this.getQuPage();
+        }
+        if (this.currentPage != value -1) {
+            // Изменяем страницу
+            this.currentPage  = value - 1;
+        } else {
+            // Просто обновить вью
+            // todo
+            // Пока нет времени на это :(
+        }
     }
 
     /**Наложить автофильтр*/
