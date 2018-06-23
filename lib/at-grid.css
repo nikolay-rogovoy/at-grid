@@ -1,26 +1,25 @@
 .uneven_row{
-  background-color: #f9f9f9;
+  background-color: #fcfcfc;
 }
 .even_row{
   background-color: #ffffff;
 }
 .uneven_row_mouse_over{
-  background-color: #e9f9f9;
+  background-color: #f9f9f9;
 }
 .even_row_mouse_over{
-  background-color: #e9f9f9;
+  background-color: #f9f9f9;
 }
 .base_row_tr{
   cursor: pointer;
 }
 .base_row_td{
-  padding: 10px;
 }
 .base_header_tr{
   cursor: pointer;
 }
 .base_header_td{
-  padding: 10px;
+    padding: 10px;
 }
 input, select {
   width:100%;
@@ -34,4 +33,63 @@ td.last {
 }
 .at-table {
   border-radius: 10px;
+}
+
+.even_row_input {
+    background-color: #fafcff;
+}
+
+.uneven_row_input {
+    background-color: #f1f4f6;
+}
+
+.even_row_mouse_over_input {
+    background-color: #eeeff0;
+}
+
+.uneven_row_mouse_over_input {
+    background-color: #eeeff0;
+}
+
+.even_row_input, .uneven_row_input, .even_row_mouse_over_input, .uneven_row_mouse_over_input {
+}
+
+.common_input {
+    border: none;
+}
+
+.common_input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.common_input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.cell_content {
+    height: 100% !important;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox_input {
+    max-height: 1.5rem;
+    min-height: 1.5rem;
+}
+
+.num_input, .currency_input {
+    text-align: right;
+}
+
+.num_view {
+    flex-direction: row-reverse;
+}
+
+.currency_view {
+    flex-direction: row-reverse;
+}
+
+.input-current-page {
+    max-width: 50px;
 }
