@@ -149,7 +149,7 @@ export class AtGrid implements  OnInit, AfterViewChecked {
         return this.currentPage + 1;
     }
     set humanCurrentPage(value) {
-        if (value < 0) {
+        if (value <= 0) {
             value = 1;
         } else if (value > this.getQuPage()) {
             value = this.getQuPage();
