@@ -1,59 +1,59 @@
 {
-    "name": "at-grid",
-    "version": "1.0.28",
-    "description": "AtGrid",
-    "main": "at-grid.umd.js",
-    "jsnext:main": "at-grid.esm.js",
-    "module": "at-grid-source.js",
-    "types": "at-grid-source.d.ts",
-    "typings": "at-grid-source.d.ts",
-    "scripts": {
-        "copy": "node tools/copy-package.js && node tools/cleanup-package.js",
-        "bundle": "rollup -c rollup.config.umd.js",
-        "removecode": "node tools/removecode.js",
-        "build": "rimraf dist && npm run bundle && npm run copy && npm run gulp-inline-templates && npm run ngc-es && npm run removecode",
-        "ngc-es": "ngc -p tsconfig-es.json",
-        "publish": "cd ./dist && npm publish",
-        "npm-link": "cd ./dist && npm link",
-        "gulp-inline-templates": "rimraf tmp && gulp inline-templates",
-        "copy-to-test": "cp ./dist/*.* ../wd/node_modules/at-grid/"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/nikolay-rogovoy/at-grid.git"
-    },
-    "keywords": [
-        "datagrid"
-    ],
-    "author": "n_g <nikolay.rogovoy@gmail.com>",
-    "license": "ISC",
-    "dependencies": {
-        "@angular/common": "^6.0.0",
-        "@angular/compiler": "^6.0.0",
-        "@angular/forms": "^6.0.0",
-        "@angular/core": "^6.0.0",
-        "@angular/platform-browser": "^6.0.0",
-        "rxjs": "^6.0.0",
-        "zone.js": "^0.8.26"
-    },
-    "devDependencies": {
-        "@angular/compiler-cli": "^6.0.0",
-        "@types/node": "^10.9.3",
-        "del": "^2.2.2",
-        "gulp": "^4.0.0",
-        "gulp-inline-ng2-template": "^4.0.0",
-        "node-sass": "^4.5.3",
-        "rimraf": "^2.5.4",
-        "rollup": "^0.50.0",
-        "rollup-plugin-angular": "^0.4.4",
-        "rollup-plugin-commonjs": "^8.2.1",
-        "rollup-plugin-node-resolve": "^3.0.0",
-        "rollup-plugin-typescript": "^0.8.1",
-        "rollup-plugin-uglify": "^2.0.1",
-        "typescript": "~2.7.2"
-    },
-    "bugs": {
-        "url": "https://github.com/nikolay-rogovoy/at-grid/issues"
-    },
-    "homepage": "https://github.com/nikolay-rogovoy/at-grid#readme"
+  "name": "at-grid",
+  "version": "1.0.30",
+  "description": "AtGrid",
+  "main": "at-grid.umd.js",
+  "jsnext:main": "at-grid.esm.js",
+  "module": "at-grid-source.js",
+  "types": "at-grid-source.d.ts",
+  "typings": "at-grid-source.d.ts",
+  "scripts": {
+    "copy": "node tools/copy-package.js && node tools/cleanup-package.js",
+    "bundle": "rollup -c rollup.config.umd.js",
+    "removecode": "node tools/removecode.js",
+    "build": "rimraf dist && npm run bundle && npm run copy && npm run gulp-inline-templates && npm run ngc-es && npm run removecode",
+    "ngc-es": "ngc -p tsconfig-es.json",
+    "publish": "cd ./dist && npm publish",
+    "npm-link": "cd ./dist && npm link",
+    "gulp-inline-templates": "rimraf tmp && gulp inline-templates",
+    "copy-to-test": "cp ./dist/*.* ../wd/node_modules/at-grid/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikolay-rogovoy/at-grid.git"
+  },
+  "keywords": [
+    "datagrid"
+  ],
+  "author": "n_g <nikolay.rogovoy@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/compiler": "^7.2.0",
+    "@angular/forms": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "@angular/platform-browser": "^7.2.0",
+    "rxjs": "^6.3.3",
+    "zone.js": "^0.8.26"
+  },
+  "devDependencies": {
+    "@angular/compiler-cli": "^7.2.0",
+    "@types/node": "^10.9.3",
+    "del": "^2.2.2",
+    "gulp": "^4.0.0",
+    "gulp-inline-ng2-template": "^4.0.0",
+    "node-sass": "^4.5.3",
+    "rimraf": "^2.5.4",
+    "rollup": "^0.50.0",
+    "rollup-plugin-angular": "^0.4.4",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-plugin-uglify": "^2.0.1",
+    "typescript": "~3.2.2"
+  },
+  "bugs": {
+    "url": "https://github.com/nikolay-rogovoy/at-grid/issues"
+  },
+  "homepage": "https://github.com/nikolay-rogovoy/at-grid#readme"
 }
