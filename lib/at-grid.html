@@ -193,11 +193,13 @@
                                             'even_row_mouse_over_input': (idx % 2 == 0) && rowNumMouseOver == idx,
                                             'uneven_row_mouse_over_input': (idx % 2 == 1) && rowNumMouseOver == idx
                                             }"
-                               [(ngModel)]="item[column.name]"
+                                [value]="item[column.name]"
+                                (input)="setValue(item, column.name, $event.target.value)"
                                (change)="changedCell({columnInfo: column, value: item})"
                                (click)="$event.stopPropagation()"
                         />
                     </div>
+                    <!-- [(ngModel)]="item[column.name]" -->
 
                     <div *ngIf="column.columnFormat == columnFormat.Boolean"
                          [id]="getCellId(idx, colNum)"
