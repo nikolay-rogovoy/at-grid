@@ -389,4 +389,10 @@ export class AtGrid implements  OnInit, AfterViewChecked {
             }
         }
     }
+
+    /***/
+    setValue(item: Object, columnName: string, value: any) {
+        console.log(value);
+        item[columnName] = value;
+    }
 }
